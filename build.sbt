@@ -12,8 +12,11 @@ lazy val root = (project in file("."))
       "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
       "com.github.pureconfig" %% "pureconfig" % "0.11.0",
       "org.apache.flink" %% "flink-scala" % flinkVersion % Provided,
+      "org.apache.flink" %% "flink-clients" % flinkVersion % Provided,
       "org.scalatest" %% "scalatest" % "3.0.8" % Test
     )
   )
 
 enablePlugins(PackPlugin)
+
+parallelExecution in Test := false

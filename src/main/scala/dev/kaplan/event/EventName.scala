@@ -1,6 +1,8 @@
 package dev.kaplan.event
 
-sealed abstract class EventName(val name: String)
+sealed abstract class EventName(val name: String) {
+  override def toString: String = name
+}
 
 case object Add    extends EventName("add")
 case object View   extends EventName("view")

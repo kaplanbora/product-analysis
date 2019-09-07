@@ -3,6 +3,7 @@ package dev.kaplan
 import org.apache.flink.api.scala._
 import com.typesafe.scalalogging.Logger
 import dev.kaplan.analysis.UniqueProductView.findUniqueProductViews
+import dev.kaplan.analysis.UniqueEventCount.findUniqueEventCounts
 import dev.kaplan.event.{RawUserEvent, UserEvent}
 
 object ProductAnalysis {
@@ -19,10 +20,11 @@ object ProductAnalysis {
     val events: DataSet[UserEvent] = rawEvents.map(_.enrich)
 
     val uniqueProductViews = findUniqueProductViews(events)
-
+    val uniqueEventCounts = findUniqueEventCounts(rawEvents)
+    
     uniqueProductViews.print()
-    uniqueProductViews.writeAsCsv("/tmp/flink/p1.csv", fieldDelimiter = "|")
-
+    uniqueEventCounts.print()
+    
     env.execute("Product Analysis")
   }
 }

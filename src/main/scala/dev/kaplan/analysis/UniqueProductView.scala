@@ -6,8 +6,8 @@ import org.apache.flink.api.scala._
 case class UniqueProductView(productId: Long, uniqueViews: Int)
 
 object UniqueProductView {
-  def findUniqueProductViews(cases: DataSet[UserEvent]): DataSet[UniqueProductView] =
-    cases
+  def findUniqueProductViews(events: DataSet[UserEvent]): DataSet[UniqueProductView] =
+    events
       .filter(_.eventName == View)
       .groupBy(_.productId)
       .reduceGroup(reduceByUser _)
