@@ -1,21 +1,27 @@
 package dev.kaplan
 
-import org.apache.flink.api.scala.{AggregateDataSet, DataSet, ExecutionEnvironment}
-import org.apache.flink.streaming.api.scala._
+import org.apache.flink.api.scala._
+import com.typesafe.scalalogging.Logger
+import dev.kaplan.analysis.UniqueProductView.findUniqueProductViews
+import dev.kaplan.event.{RawUserEvent, UserEvent}
 
 object ProductAnalysis {
-  case class CaseRaw(date: Long, productId: Long, eventName: String, userId: Long)
- 
   def main(args: Array[String]): Unit = {
+    val logger = Logger(this.getClass)
     val env = ExecutionEnvironment.getExecutionEnvironment
-
-    val cases: DataSet[CaseRaw] = env.readCsvFile[CaseRaw](
+    
+    val rawEvents: DataSet[RawUserEvent] = env.readCsvFile[RawUserEvent](
       filePath = "/tmp/flink/case.csv",
       fieldDelimiter = "|", 
       ignoreFirstLine = true
     )
+    
+    val events: DataSet[UserEvent] = rawEvents.map(_.enrich)
 
-    println(cases.count())
+    val uniqueProductViews = findUniqueProductViews(events)
+
+    uniqueProductViews.print()
+    uniqueProductViews.writeAsCsv("/tmp/flink/p1.csv", fieldDelimiter = "|")
 
     env.execute("Product Analysis")
   }
