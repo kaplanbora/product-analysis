@@ -1,9 +1,10 @@
 package dev.kaplan
 
 import org.apache.flink.api.scala._
-import dev.kaplan.analysis.UniqueProductView.findUniqueProductViews
+import dev.kaplan.analysis.UniqueProductViewCount.findUniqueProductViews
 import dev.kaplan.analysis.UniqueEventCount.findUniqueEventCounts
 import dev.kaplan.analysis.UserEventCount.countEventsForUser
+import dev.kaplan.analysis.UserProductView.findViewedProductsForUser
 import dev.kaplan.event.{RawUserEvent, UserEvent}
 
 object ProductAnalysis {
@@ -21,10 +22,12 @@ object ProductAnalysis {
     val uniqueProductViews = findUniqueProductViews(events)
     val uniqueEventCounts = findUniqueEventCounts(rawEvents)
     val eventCountsForUser = countEventsForUser(47, rawEvents)
+    val productViewsForUser = findViewedProductsForUser(47, events)
     
     uniqueProductViews.print()
     uniqueEventCounts.print()
     eventCountsForUser.print()
+    productViewsForUser.print()
     
     env.execute("Product Analysis")
   }
