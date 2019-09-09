@@ -5,6 +5,7 @@ import dev.kaplan.analysis.UniqueProductViewCount.findUniqueProductViews
 import dev.kaplan.analysis.UniqueEventCount.findUniqueEventCounts
 import dev.kaplan.analysis.UserEventCount.countEventsForUser
 import dev.kaplan.analysis.UserProductView.findViewedProductsForUser
+import dev.kaplan.analysis.TopUser.findTopUsersByMostEvents
 import dev.kaplan.event.{RawUserEvent, UserEvent}
 
 object ProductAnalysis {
@@ -23,11 +24,13 @@ object ProductAnalysis {
     val uniqueEventCounts = findUniqueEventCounts(rawEvents)
     val eventCountsForUser = countEventsForUser(47, rawEvents)
     val productViewsForUser = findViewedProductsForUser(47, events)
+    val usersDidMostEvents = findTopUsersByMostEvents(5, events)
     
     uniqueProductViews.print()
     uniqueEventCounts.print()
     eventCountsForUser.print()
     productViewsForUser.print()
+    usersDidMostEvents.print()
     
     env.execute("Product Analysis")
   }
