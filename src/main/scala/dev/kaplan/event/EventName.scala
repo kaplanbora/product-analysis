@@ -1,13 +1,13 @@
 package dev.kaplan.event
 
-sealed abstract class EventName(val name: String) {
+sealed case class EventName(name: String) {
   override def toString: String = name
 }
 
-case object Add    extends EventName("add")
-case object View   extends EventName("view")
-case object Remove extends EventName("remove")
-case object Click  extends EventName("click")
+object Add    extends EventName("add")
+object View   extends EventName("view")
+object Remove extends EventName("remove")
+object Click  extends EventName("click")
 
 object EventName {
   def fromString(stringName: String): EventName = stringName match {

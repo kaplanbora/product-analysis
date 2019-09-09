@@ -21,8 +21,8 @@ object ProductAnalysis {
     val events: DataSet[UserEvent] = rawEvents.map(_.enrich)
 
     val uniqueProductViews = findUniqueProductViews(events)
-    val uniqueEventCounts = findUniqueEventCounts(rawEvents)
-    val eventCountsForUser = countEventsForUser(47, rawEvents)
+    val uniqueEventCounts = findUniqueEventCounts(events)
+    val eventCountsForUser = countEventsForUser(47, events)
     val productViewsForUser = findViewedProductsForUser(47, events)
     val usersDidMostEvents = findTopUsersByMostEvents(5, events)
     

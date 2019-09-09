@@ -20,7 +20,7 @@ class UniqueProductViewCountTestSpec extends TestSpec {
     val testOutput = findUniqueProductViews(events).collect()
     val expectedOutput = Seq(
       UniqueProductViewCount(productId = 100, uniqueViews = 2),
-      UniqueProductViewCount(productId = 200, uniqueViews = 1)
+      UniqueProductViewCount(productId = 200, uniqueViews = 1),
     )
     
     testOutput should contain theSameElementsAs expectedOutput

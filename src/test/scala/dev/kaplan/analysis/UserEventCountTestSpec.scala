@@ -8,22 +8,22 @@ import org.apache.flink.api.scala._
 class UserEventCountTestSpec extends TestSpec {
   "User event counter" should "only count given userId" in {
     val testInput = Seq(
-      RawUserEvent(0, 0, "view",  userId = 10),
-      RawUserEvent(0, 0, "view",  userId = 20),
-      RawUserEvent(0, 0, "add",   userId = 20),
-      RawUserEvent(0, 0, "add",   userId = 20),
-      RawUserEvent(0, 0, "click", userId = 30),
-      RawUserEvent(0, 0, "click", userId = 30),
-      RawUserEvent(0, 0, "click", userId = 20),
+      UserEvent(0, 0, View,  userId = 10),
+      UserEvent(0, 0, View,  userId = 20),
+      UserEvent(0, 0, Add,   userId = 20),
+      UserEvent(0, 0, Add,   userId = 20),
+      UserEvent(0, 0, Click, userId = 30),
+      UserEvent(0, 0, Click, userId = 30),
+      UserEvent(0, 0, Click, userId = 20),
     )
     
     val events = env.fromCollection(testInput)
     
     val testOutput = countEventsForUser(20, events).collect()
     val expectedOutput = Seq(
-      UserEventCount("view", 1),
-      UserEventCount("add", 2),
-      UserEventCount("click", 1),
+      UserEventCount(View, 1),
+      UserEventCount(Add, 2),
+      UserEventCount(Click, 1),
     )
     
     testOutput should contain theSameElementsAs expectedOutput
