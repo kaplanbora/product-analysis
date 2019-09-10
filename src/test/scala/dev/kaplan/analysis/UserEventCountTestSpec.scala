@@ -21,9 +21,9 @@ class UserEventCountTestSpec extends TestSpec {
     
     val testOutput = countEventsForUser(20, events).collect()
     val expectedOutput = Seq(
-      UserEventCount(View, 1),
-      UserEventCount(Add, 2),
-      UserEventCount(Click, 1),
+      View  -> 1,
+      Add   -> 2,
+      Click -> 1,
     )
     
     testOutput should contain theSameElementsAs expectedOutput

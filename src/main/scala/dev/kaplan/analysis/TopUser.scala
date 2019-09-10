@@ -3,22 +3,21 @@ package dev.kaplan.analysis
 import dev.kaplan.event._
 import org.apache.flink.api.common.operators.Order
 import org.apache.flink.api.scala._
-
-case class TopUser(userId: Long, count: Int)
+import org.apache.flink.api.scala.extensions._
 
 object TopUser {
   case class EventCounts(userId: Long, add: Int, view: Int, click: Int, remove: Int)
   
-  def findTopUsersByMostEvents(numOfUsers: Int, events: DataSet[UserEvent]): DataSet[TopUser] =
+  def findTopUsersByMostEvents(numOfUsers: Int, events: DataSet[UserEvent]): DataSet[(Long, Int)] =
     events
       .groupBy(_.userId)
       .reduceGroup(x => minEventCount(x))
-      .filter(_.count > 0)
-      .sortPartition(_.count, Order.DESCENDING)
+      .filterWith { case (_, count) => count > 0}
+      .sortPartition(1, Order.DESCENDING)
       .first(numOfUsers)
-      .sortPartition(_.count, Order.DESCENDING)
+      .sortPartition(1, Order.DESCENDING)
   
-  private def minEventCount(userEvents: Iterator[UserEvent]): TopUser = {
+  private def minEventCount(userEvents: Iterator[UserEvent]): (Long, Int) = {
     val events = userEvents.toList
     val userId = events.head.userId
     
@@ -33,6 +32,6 @@ object TopUser {
     
     val EventCounts(_, add, view, click, remove) = eventCounts
     
-    TopUser(userId, add min view min click min remove)
+    (userId, add min view min click min remove)
   }
 }

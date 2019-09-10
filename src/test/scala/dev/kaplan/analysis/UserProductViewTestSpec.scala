@@ -3,6 +3,7 @@ package dev.kaplan.analysis
 import dev.kaplan.TestSpec
 import dev.kaplan.analysis.UserProductView.findViewedProductsForUser
 import dev.kaplan.event._
+import dev.kaplan.util.Extensions.LongOps
 import org.apache.flink.api.scala._
 
 class UserProductViewTestSpec extends TestSpec {
@@ -19,7 +20,7 @@ class UserProductViewTestSpec extends TestSpec {
     val events = env.fromCollection(testInput)
     
     val testOutput = findViewedProductsForUser(30, events).collect()
-    val expectedOutput = Seq(100, 200)
+    val expectedOutput = Seq(100.tupled, 200.tupled)
     
     testOutput should contain theSameElementsAs expectedOutput
   }
@@ -36,7 +37,7 @@ class UserProductViewTestSpec extends TestSpec {
     val events = env.fromCollection(testInput)
   
     val testOutput = findViewedProductsForUser(20, events).collect()
-    val expectedOutput = Seq(100, 200)
+    val expectedOutput = Seq(100.tupled, 200.tupled)
   
     testOutput should contain theSameElementsAs expectedOutput
   }

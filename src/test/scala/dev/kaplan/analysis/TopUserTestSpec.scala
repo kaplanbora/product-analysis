@@ -36,8 +36,8 @@ class TopUserTestSpec extends TestSpec {
     
     val testOutput = findTopUsersByMostEvents(5, events).collect()
     val expectedOutput = Seq(
-      TopUser(userId = 30, count = 2),
-      TopUser(userId = 20, count = 1),
+      30 -> 2,
+      20 -> 1,
     )
     
     testOutput should contain theSameElementsInOrderAs expectedOutput

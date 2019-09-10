@@ -21,9 +21,9 @@ class UniqueEventCountTestSpec extends TestSpec {
     
     val testOutput = findUniqueEventCounts(events).collect()
     val expectedOutput = Seq(
-      UniqueEventCount(View, 1),
-      UniqueEventCount(Add, 2),
-      UniqueEventCount(Click, 2),
+      View  -> 1,
+      Add   -> 2,
+      Click -> 2,
     )
     
     testOutput should contain theSameElementsAs expectedOutput
