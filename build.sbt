@@ -9,7 +9,6 @@ lazy val root = (project in file("."))
     name := "product-analysis",
     libraryDependencies ++= Seq(
       "ch.qos.logback" % "logback-classic" % "1.2.3",
-      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
       "com.github.pureconfig" %% "pureconfig" % "0.11.0",
       "org.apache.flink" %% "flink-scala" % flinkVersion % Provided,
       "org.apache.flink" %% "flink-clients" % flinkVersion % Provided,

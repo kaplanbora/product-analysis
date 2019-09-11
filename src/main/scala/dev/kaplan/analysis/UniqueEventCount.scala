@@ -6,8 +6,11 @@ import org.apache.flink.api.scala._
 object UniqueEventCount {
   def findUniqueEventCounts(events: DataSet[UserEvent]): DataSet[(EventName, Int)] =
     events
-      .distinct
-      .map(_.eventName -> 1)
-      .groupBy(0)
-      .sum(1)
+      .groupBy(_.eventName)
+      .reduceGroup { groupedEvents =>
+        val events = groupedEvents.toList
+        val eventName = events.head.eventName
+        val uniqueCount = events.map(_.userId).distinct.length
+        eventName -> uniqueCount
+      }
 }

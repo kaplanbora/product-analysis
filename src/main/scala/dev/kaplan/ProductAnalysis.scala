@@ -1,6 +1,5 @@
 package dev.kaplan
 
-
 import org.apache.flink.api.scala._
 import dev.kaplan.analysis.UniqueProductViewCount.findUniqueProductViews
 import dev.kaplan.analysis.UniqueEventCount.findUniqueEventCounts
@@ -21,24 +20,22 @@ object ProductAnalysis {
     val userIdForEvents = ParameterTool.fromArgs(args).getLong("user-id-for-events")
     val userIdForProducts = ParameterTool.fromArgs(args).getLong("user-id-for-products")
     
-    val rawEvents: DataSet[RawUserEvent] = env.readCsvFile[RawUserEvent](
+    val events: DataSet[UserEvent] = env.readCsvFile[RawUserEvent](
       filePath = inputFile,
       fieldDelimiter = "|", 
       ignoreFirstLine = true
+    ).map(_.enrich)
+    
+    val solutions = Map(
+      "problem1" -> findUniqueProductViews(events),
+      "problem2" -> findUniqueEventCounts(events),
+      "problem3" -> findTopUsersByMostEvents(numOfTopUsers, events),
+      "problem4" -> countEventsForUser(userIdForEvents, events),
+      "problem5" -> findViewedProductsForUser(userIdForProducts, events),
     )
     
-    val events: DataSet[UserEvent] = rawEvents.map(_.enrich)
-    
-    val solutionsInOrder = List(
-      findUniqueProductViews(events),
-      findUniqueEventCounts(events),
-      findTopUsersByMostEvents(numOfTopUsers, events),
-      countEventsForUser(userIdForEvents, events),
-      findViewedProductsForUser(userIdForProducts, events),
-    )
-    
-    solutionsInOrder.zipWithIndex.map { case (solution, number) =>
-        solution.writeAsCsv(s"$outputDir/problem-${number + 1}.txt", fieldDelimiter = "|", writeMode = FileSystem.WriteMode.OVERWRITE)
+    solutions.map { case (problem, solution) =>
+        solution.writeAsCsv(s"$outputDir/$problem.txt", fieldDelimiter = "|", writeMode = FileSystem.WriteMode.OVERWRITE)
     }
     
     env.execute("Product Analysis")

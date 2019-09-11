@@ -8,13 +8,10 @@ object UniqueProductViewCount {
     events
       .filter(_.eventName == View)
       .groupBy(_.productId)
-      .reduceGroup(reduceByUser _)
-  
-  private def reduceByUser(groupedEvents: Iterator[UserEvent]): (Long, Int) = {
-    val events = groupedEvents.toList
-    val uniqueViews = events.map(_.userId).distinct.length
-    val productId = events.head.productId
-    
-    productId -> uniqueViews
-  }
+      .reduceGroup { groupedEvents =>
+        val events = groupedEvents.toList
+        val uniqueViews = events.map(_.userId).distinct.length
+        val productId = events.head.productId
+        productId -> uniqueViews
+      }
 }
