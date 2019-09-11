@@ -16,6 +16,4 @@ lazy val root = (project in file("."))
     )
   )
 
-enablePlugins(PackPlugin)
-
 parallelExecution in Test := false
