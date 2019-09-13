@@ -1,0 +1,10 @@
+# Docker related variables
+export HOST_PATH="/tmp/flink"
+export CONT_PATH="/data"
+export JOBMANAGER_NAME="flink-jobmanager-1.9.0"
+export TASKMANAGER_NAME="flink-taskmanager-1.9.0"
+
+# Flink job arguements
+export TOP_USERS=5
+export USER_ID_FOR_EVENTS=47
+export USER_ID_FOR_PRODUCTS=47

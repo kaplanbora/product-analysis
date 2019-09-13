@@ -35,7 +35,7 @@ object ProductAnalysis {
     )
     
     solutions.map { case (problem, solution) =>
-        solution.writeAsCsv(s"$outputDir/$problem.txt", fieldDelimiter = "|", writeMode = FileSystem.WriteMode.OVERWRITE)
+      solution.writeAsCsv(s"$outputDir/$problem.txt", fieldDelimiter = "|", writeMode = FileSystem.WriteMode.OVERWRITE)
     }
     
     env.execute("Product Analysis")
