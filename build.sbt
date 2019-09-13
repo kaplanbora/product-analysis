@@ -1,5 +1,5 @@
 ThisBuild / scalaVersion := "2.12.8"
-ThisBuild / version := "1.0.0"
+ThisBuild / version := "1.1.0-SNAPSHOT"
 ThisBuild / organization := "dev.kaplan"
 
 val flinkVersion = "1.9.0"
